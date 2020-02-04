@@ -1,47 +1,37 @@
 package com.example.objectmovement;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
-    TextView _view;
-    ViewGroup _root;
-    private int _xDelta;
-    private int _yDelta;
+    private TextView mTextView;
+    private TextView mTextView2;
+    private ViewGroup mRootView;
+    private float mXDelta;
+    private float mYDelta;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        _root = (ViewGroup)findViewById(R.id.root);
-
-        _view = new TextView(this);
-        _view.setText("TextView!!!!!!!!");
-
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 50);
-        layoutParams.leftMargin = 50;
-        layoutParams.topMargin = 50;
-        layoutParams.bottomMargin = -250;
-        layoutParams.rightMargin = -250;
-        _view.setLayoutParams(layoutParams);
-
-        _view.setOnTouchListener(this);
-        _root.addView(_view);
+        mRootView = (ViewGroup)findViewById(R.id.root);
+        mTextView = (TextView) findViewById(R.id.tv_1);
+        mTextView2 = (TextView) findViewById(R.id.tv_2);
+        mTextView.setOnTouchListener(this);
+        mTextView2.setOnTouchListener(this);
     }
 
+    @Override
     public boolean onTouch(View view, MotionEvent event) {
-        final int X = (int) event.getRawX();
-        final int Y = (int) event.getRawY();
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-                RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                _xDelta = X - lParams.leftMargin;
-                _yDelta = Y - lParams.topMargin;
+                mXDelta = view.getX() - event.getRawX();
+                mYDelta = view.getY() - event.getRawY();
                 break;
             case MotionEvent.ACTION_UP:
                 break;
@@ -50,15 +40,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             case MotionEvent.ACTION_POINTER_UP:
                 break;
             case MotionEvent.ACTION_MOVE:
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-                layoutParams.leftMargin = X - _xDelta;
-                layoutParams.topMargin = Y - _yDelta;
-                layoutParams.rightMargin = -250;
-                layoutParams.bottomMargin = -250;
-                view.setLayoutParams(layoutParams);
+                view.animate()
+                        .x(event.getRawX() + mXDelta)
+                        .y(event.getRawY() + mYDelta)
+                        .setDuration(0)
+                        .start();
                 break;
         }
-        _root.invalidate();
         return true;
     }
 }
