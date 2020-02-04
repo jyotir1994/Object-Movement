@@ -9,9 +9,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
-    private TextView mTextView;
-    private TextView mTextView2;
-    private ViewGroup mRootView;
     private float mXDelta;
     private float mYDelta;
 
@@ -19,9 +16,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mRootView = (ViewGroup)findViewById(R.id.root);
-        mTextView = (TextView) findViewById(R.id.tv_1);
-        mTextView2 = (TextView) findViewById(R.id.tv_2);
+        TextView mTextView = (TextView) findViewById(R.id.tv_1);
+        TextView mTextView2 = (TextView) findViewById(R.id.tv_2);
         mTextView.setOnTouchListener(this);
         mTextView2.setOnTouchListener(this);
     }
